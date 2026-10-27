@@ -1,0 +1,374 @@
+/* ==========================================================================
+   1. СТОРІНКА СПИСКУ НОВИН (NEWS LIST PAGE — 3 КОЛОНКИ)
+   ========================================================================== */
+.news-page-wrapper {
+  background-color: var(--bg-light, #f8fafc);
+  padding-top: 110px;
+  padding-bottom: 70px;
+  min-height: 80vh;
+}
+
+.news-page-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ЗАГОЛОВОК СТОРІНКИ ТА ПІДЗАГОЛОВОК */
+.news-page-header {
+  margin-bottom: 35px;
+}
+
+.news-page-header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+}
+
+.news-page-header p {
+  font-size: 16px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* СІТКА НОВИН В 3 КОЛОНКИ */
+.news-page-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.news-page-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.news-page-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px -5px rgba(15, 23, 42, 0.1);
+}
+
+.news-card-img-box {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: #f1f5f9;
+  display: block;
+}
+
+.news-card-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.news-page-card:hover .news-card-img-box img {
+  transform: scale(1.06);
+}
+
+.news-card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.news-card-date-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0284c7;
+  background-color: #e0f2fe;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  width: fit-content;
+}
+
+.news-card-title-text {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.news-card-excerpt {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.btn-read-more-orange {
+  background: #f97316;
+  color: #ffffff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-top: auto;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-read-more-orange:hover {
+  background: #ea580c;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   2. ФІЛЬТРИ ТА ПАГІНАЦІЯ НОВИН (FILTERS & PAGINATION)
+   ========================================================================== */
+.news-filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: #ffffff;
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.news-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.news-filter-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.news-filter-select {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.news-filter-select:focus {
+  border-color: #2563eb;
+}
+
+.btn-reset-filters {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-reset-filters:hover {
+  background: #fca5a5;
+  color: #ffffff;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-number {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-number:hover {
+  background-color: #f1f5f9;
+}
+
+.pagination-number.active {
+  background-color: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+/* ==========================================================================
+   3. ОКРЕМА СТОРІНКА НОВИНИ (NEWS DETAIL PAGE)
+   ========================================================================== */
+.news-detail-wrapper {
+  background-color: var(--bg-light, #f8fafc);
+  padding: 110px 20px 60px 20px;
+  min-height: 85vh;
+}
+
+.news-detail-card {
+  max-width: 860px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px 48px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.btn-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 24px;
+  padding: 8px 16px;
+  background-color: #eff6ff;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.btn-back-link:hover {
+  background-color: #dbeafe;
+  transform: translateX(-3px);
+}
+
+.news-detail-date {
+  color: #0284c7;
+  font-size: 13px;
+  font-weight: 700;
+  background-color: #e0f2fe;
+  padding: 4px 12px;
+  border-radius: 20px;
+  width: fit-content;
+  margin-bottom: 16px;
+}
+
+.news-detail-title {
+  font-size: 32px;
+  color: #0f172a;
+  font-weight: 800;
+  line-height: 1.3;
+  margin-top: 0;
+  margin-bottom: 28px;
+  letter-spacing: -0.5px;
+}
+
+.news-detail-img-box {
+  width: 100%;
+  max-height: 420px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.news-detail-img-box img {
+  width: 100%;
+  height: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  display: block;
+}
+
+.news-modal-html {
+  font-size: 16px;
+  color: #334155;
+  line-height: 1.8;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.news-modal-html p {
+  margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   4. АДАПТИВНІСТЬ (RESPONSIVE)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .news-page-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .news-page-wrapper {
+    padding-top: 90px;
+  }
+  .news-page-grid {
+    grid-template-columns: 1fr;
+  }
+  .news-detail-card {
+    padding: 24px 20px;
+  }
+  .news-detail-title {
+    font-size: 24px;
+  }
+  .news-detail-img-box {
+    max-height: 280px;
+  }
+}

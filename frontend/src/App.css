@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --primary-orange: #f27a18;
+  --primary-orange-hover: #d9650b;
+  --dark-bg: #1e2530;
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+  --bg-light: #f8fafc;
+  --radius-pill: 50px;
+  --radius-card: 18px;
+  --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* body {
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+} */
+body, html {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.app-wrapper, .main-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+
+.main-content {
+  flex: 1;
+}
+
+.header-custom-logo {
+  height: 42px;
+  max-width: 140px;
+  object-fit: contain;
+  display: block;
+}
+
+.page-view-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 110px 20px 60px 20px; /* 💡 110px зверху */
+  min-height: 60vh;
+}
+
+/* ==========================================================================
+   8. АДАПТИВНІСТЬ
+   ========================================================================== */
+@media (max-width: 992px) {
+  .quick-tiles-container { grid-template-columns: repeat(2, 1fr); }
+  .why-us-grid { grid-template-columns: 1fr; }
+  .home-news-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-tiles-grid { grid-template-columns: repeat(3, 1fr); }
+  .admin-layout { flex-direction: column; }
+  .admin-sidebar { width: 100%; }
+}
+
+@media (max-width: 640px) {
+  .header-nav { display: none; }
+  .quick-tiles-container { grid-template-columns: 1fr; }
+  .home-news-grid { grid-template-columns: 1fr; }
+  .gallery-tiles-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-card { padding: 30px 20px; }
+  .hero-title { font-size: 26px; }
+  .footer-container { flex-direction: column; gap: 15px; text-align: center; }
+  .footer-contacts { flex-direction: column; gap: 8px; }
+}
+

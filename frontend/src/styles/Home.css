@@ -1,0 +1,379 @@
+/* ==========================================================================
+   ГЛОБАЛЬНИЙ СКИД ДЛЯ ПОВНОЇ ШИРИНИ
+   ========================================================================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.home-page {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   1. БАНЕР НА ПОВНУ ШИРИНУ (HERO BANNER)
+   ========================================================================== */
+.hero-full-section {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  background-color: #334155;
+}
+
+.hero-full-card {
+  position: relative;
+  width: 100%;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  padding-top: 130px;
+  padding-bottom: 90px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 0 0 32px 32px;
+}
+
+/* 💡 Мінімальне затемнення (10-25%), щоб будівлю було видно в істинному кольорі */
+.hero-dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.3) 0%, rgba(15, 23, 42, 0.05) 50%, rgba(15, 23, 42, 0.35) 100%);
+  z-index: 1;
+}
+
+.hero-inner-container {
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-content {
+  max-width: 640px;
+  color: #ffffff;
+}
+
+.hero-badge-pill {
+  display: inline-block;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  color: #38bdf8;
+}
+
+.hero-title {
+  font-size: 44px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  color: #e2e8f0;
+  margin-bottom: 32px;
+  line-height: 1.6;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-hero-orange {
+  background: #f97316;
+  color: #ffffff;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-hero-orange:hover {
+  background: #ea580c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.5);
+}
+
+.btn-hero-glass {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 14px 30px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-hero-glass:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   2. 4 ПЛАВАЮЧІ КАРТКИ ШВИДКОГО ДОСТУПУ (QUICK TILES)
+   ========================================================================== */
+.quick-tiles-wrapper {
+  max-width: 1240px;
+  margin: -50px auto 50px auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.quick-tiles-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.quick-tile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quick-tile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
+}
+
+.tile-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.tile-blue   { background-color: #e0f2fe; }
+.tile-orange { background-color: #ffedd5; }
+.tile-green  { background-color: #dcfce7; }
+.tile-purple { background-color: #f3e8ff; }
+
+.tile-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.tile-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.tile-sub {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   3. ОСТАННІ НОВИНИ НА ГОЛОВНІЙ
+   ========================================================================== */
+.home-news-section {
+  padding: 60px 20px;
+  background-color: #f8fafc;
+}
+
+.home-news-container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.home-news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.home-news-header h2 {
+  font-size: 28px;
+  color: #0f172a;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+}
+
+.home-news-header p {
+  color: #64748b;
+  font-size: 15px;
+  margin: 0;
+}
+
+.btn-all-news {
+  padding: 10px 20px;
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+  transition: background-color 0.2s ease;
+}
+
+.btn-all-news:hover {
+  background-color: #1d4ed8;
+}
+
+.home-news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.news-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.news-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+}
+
+.news-card-img-link {
+  text-decoration: none;
+  display: block;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  background: #f1f5f9;
+}
+
+.news-card-img-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.news-card:hover .news-card-img-link img {
+  transform: scale(1.05);
+}
+
+.news-card-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.news-card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.news-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.news-card-title a {
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.news-card-excerpt {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.news-card-link {
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* АДАПТИВНІСТЬ */
+@media (max-width: 992px) {
+  .quick-tiles-container { grid-template-columns: repeat(2, 1fr); }
+  .hero-title { font-size: 34px; }
+}
+
+@media (max-width: 640px) {
+  .quick-tiles-container { grid-template-columns: 1fr; }
+  .hero-title { font-size: 28px; }
+  .hero-full-card { 
+    min-height: 380px; /* 💡 було 520px */
+    padding-top: 90px;  /* 💡 було 110px */
+    padding-bottom: 40px;
+  }
+}
