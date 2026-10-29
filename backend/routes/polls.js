@@ -1,17 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
-const { authenticateToken } = require('../middleware/auth');
+const { authenticateToken, requirePermission } = require('../middleware/auth');
 
-// 1. Отримати опитування (Публічно — тільки дійсні та активні)
+// 1. Отримати опитування (Публічно)
 router.get('/', async (req, res) => {
   try {
-    // Якщо запит з адмінки (є query param ?all=true) — повертаємо всі
     const showAll = req.query.all === 'true';
 
     let query = 'SELECT * FROM polls';
     if (!showAll) {
-      // Показуємо тільки is_active = 1 ТА (expires_at IS NULL АБО expires_at >= NOW())
       query += ' WHERE is_active = 1 AND (expires_at IS NULL OR expires_at >= NOW())';
     }
     query += ' ORDER BY id DESC';
@@ -30,7 +28,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 2. Проголосувати
+// 2. Проголосувати (Публічно)
 router.post('/:id/vote', async (req, res) => {
   const pollId = req.params.id;
   const { optionId } = req.body;
@@ -65,15 +63,15 @@ router.post('/:id/vote', async (req, res) => {
   }
 });
 
-// 3. Створити нове опитування (Адмін)
-router.post('/', authenticateToken, async (req, res) => {
+// 3. Створити нове опитування (Право 'polls' або 'settings')
+router.post('/', authenticateToken, requirePermission('polls'), async (req, res) => {
   const { title, options, expires_at, is_active } = req.body;
 
   if (!title || !options || !Array.isArray(options) || options.length < 2) {
     return res.status(400).json({ error: 'Вкажіть тему та мінімум 2 варіанти відповідей' });
   }
 
-  const expireValue = expires_at ? `${expires_at} 23:59:59` : null;
+  const expireValue = (expires_at && String(expires_at).trim() !== '') ? `${expires_at} 23:59:59` : null;
   const activeValue = is_active !== undefined ? (is_active ? 1 : 0) : 1;
 
   try {
@@ -99,8 +97,8 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
-// 4. Оновити статус активності (Адмін - Перемикач)
-router.patch('/:id/toggle-active', authenticateToken, async (req, res) => {
+// 4. Оновити статус активності
+router.patch('/:id/toggle-active', authenticateToken, requirePermission('polls'), async (req, res) => {
   const { is_active } = req.body;
   try {
     await pool.query('UPDATE polls SET is_active = ? WHERE id = ?', [is_active ? 1 : 0, req.params.id]);
@@ -110,8 +108,8 @@ router.patch('/:id/toggle-active', authenticateToken, async (req, res) => {
   }
 });
 
-// 5. Видалити опитування (Адмін)
-router.delete('/:id', authenticateToken, async (req, res) => {
+// 5. Видалити опитування
+router.delete('/:id', authenticateToken, requirePermission('polls'), async (req, res) => {
   try {
     await pool.query('DELETE FROM polls WHERE id = ?', [req.params.id]);
     res.json({ message: 'Опитування видалено успішно' });

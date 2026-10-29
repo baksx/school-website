@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
+import imageCompression from 'browser-image-compression'; //
 
 const getImageUrl = (url) => {
   if (!url) return '';
@@ -8,7 +9,6 @@ const getImageUrl = (url) => {
   return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
 };
 
-// 💡 Безпечне витягування YYYY-MM-DD без UTC зсуву
 const formatDateForInput = (dateString) => {
   if (!dateString) return '';
   if (typeof dateString === 'string' && dateString.length >= 10) {
@@ -17,14 +17,12 @@ const formatDateForInput = (dateString) => {
   return '';
 };
 
-// 💡 Поточна дата у локальному форматі YYYY-MM-DD (без ISO та UTC shifts)
 const getTodayString = () => {
   const d = new Date();
   const pad = (n) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 };
 
-// 💡 Визначення року чисто з рядка YYYY, уникаючи new Date() зсувів
 const getAlbumYear = (album) => {
   if (!album) return '2026';
   const rawDate = album.created_at || album.date;
@@ -74,7 +72,6 @@ function AdminGallery({ token, setMessage }) {
     return albums.filter(album => getAlbumYear(album) === selectedAdminYear);
   }, [albums, selectedAdminYear]);
 
-  // 💡 Створення альбому (з передачею чистого рядка YYYY-MM-DD)
   const handleCreateAlbum = async (e) => {
     e.preventDefault();
     const targetDate = albumDate || getTodayString();
@@ -98,7 +95,6 @@ function AdminGallery({ token, setMessage }) {
     }
   };
 
-  // 💡 Оновлення альбому
   const handleUpdateAlbum = async (e) => {
     e.preventDefault();
     if (!editingAlbum.title.trim()) return;
@@ -141,7 +137,7 @@ function AdminGallery({ token, setMessage }) {
     }
   };
 
-  const handleAddPhotos = async (e) => {
+ const handleAddPhotos = async (e) => {
     e.preventDefault();
 
     if (!selectedAlbumId) {
@@ -157,13 +153,30 @@ function AdminGallery({ token, setMessage }) {
     setUploading(true);
     let successCount = 0;
 
+    // Налаштування для стискання зображень
+    const options = {
+      maxSizeMB: 1,           // Максимальний розмір файлу (~1 МБ)
+      maxWidthOrHeight: 1920, // Максимальна ширина/висота (Full HD достатньо для веб)
+      useWebWorker: true,     // Використовувати фоновий потік, щоб інтерфейс не зависав
+      fileType: 'image/jpeg'  // Конвертувати у формат JPEG для кращого стискання
+    };
+
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
-      setProgressText(`Завантаження: ${i + 1} з ${selectedFiles.length}...`);
+      setProgressText(`Оптмізація та завантаження: ${i + 1} з ${selectedFiles.length}...`);
 
       try {
+        // 2. Стискаємо фото перед завантаженням
+        let fileToUpload = file;
+        
+        // Стискаємо тільки графічні файли (не стискаємо SVG або вже дрібні файли за бажанням)
+        if (file.type.startsWith('image/')) {
+          fileToUpload = await imageCompression(file, options);
+        }
+
         const formData = new FormData();
-        formData.append('image', file);
+        // Передаємо стиснутий файл (збережемо оригінальну назву)
+        formData.append('image', fileToUpload, file.name);
 
         const uploadRes = await axios.post('/api/upload', formData, {
           headers: { Authorization: `Bearer ${token}` }
@@ -183,7 +196,7 @@ function AdminGallery({ token, setMessage }) {
 
         successCount++;
       } catch (err) {
-        console.error(`Помилка завантаження файлу ${file.name}:`, err);
+        console.error(`Помилка обробки/завантаження файлу ${file.name}:`, err);
       }
     }
 
@@ -194,7 +207,7 @@ function AdminGallery({ token, setMessage }) {
     setSelectedAlbumId('');
     setFileInputKey(Date.now());
 
-    if (setMessage) setMessage(`🎉 Успішно завантажено ${successCount} з ${selectedFiles.length} фото!`);
+    if (setMessage) setMessage(`🎉 Успішно оптимізовано та завантажено ${successCount} з ${selectedFiles.length} фото!`);
     loadData();
   };
 
@@ -214,7 +227,6 @@ function AdminGallery({ token, setMessage }) {
 
   return (
     <div>
-      {/* 1. СТВОРЕННЯ АЛЬБОМУ */}
       <div className="admin-card">
         <h2>📁 Створити новий альбом</h2>
         <form onSubmit={handleCreateAlbum} className="form-group">
@@ -240,7 +252,7 @@ function AdminGallery({ token, setMessage }) {
               />
             </div>
           </div>
-          <div style={{ marginTop: '14px' }}>
+          <div className="margin-top-14">
             <button type="submit" className="btn btn-primary">
               ➕ Створити альбом
             </button>
@@ -248,7 +260,6 @@ function AdminGallery({ token, setMessage }) {
         </form>
       </div>
 
-      {/* 2. МАСОВЕ ДОДАВАННЯ ФОТО */}
       <div className="admin-card">
         <h2>📸 Додати фотографії у галерею</h2>
         <form onSubmit={handleAddPhotos}>
@@ -310,7 +321,6 @@ function AdminGallery({ token, setMessage }) {
         </form>
       </div>
 
-      {/* 3. СПИСОК АЛЬБОМІВ */}
       <div className="admin-card">
         <div className="chart-header">
           <h3>📁 Наявні альбоми ({filteredAlbums.length})</h3>
@@ -353,16 +363,14 @@ function AdminGallery({ token, setMessage }) {
                     <form onSubmit={handleUpdateAlbum} className="admin-album-edit-form">
                       <input
                         type="text"
-                        className="form-control"
-                        style={{ flexGrow: 1 }}
+                        className="form-control admin-flex-1"
                         value={editingAlbum.title}
                         onChange={e => setEditingAlbum({ ...editingAlbum, title: e.target.value })}
                         required
                       />
                       <input
                         type="date"
-                        className="form-control"
-                        style={{ width: 'auto' }}
+                        className="form-control width-auto"
                         value={editingAlbum.created_at}
                         onChange={e => setEditingAlbum({ ...editingAlbum, created_at: e.target.value })}
                       />
@@ -372,7 +380,7 @@ function AdminGallery({ token, setMessage }) {
                   ) : (
                     <>
                       <div className="admin-album-info">
-                        <span style={{ fontSize: '18px' }}>📁</span>
+                        <span className="font-size-18">📁</span>
                         <div>
                           <strong className="admin-album-title">{album.title}</strong>
                           <small className="admin-album-date">
@@ -426,13 +434,12 @@ function AdminGallery({ token, setMessage }) {
         </div>
       </div>
 
-      {/* 4. КЕРУВАННЯ ФОТОГРАФІЯМИ ОБРАНОГО АЛЬБОМУ */}
       <div className="admin-card" id="album-photos-view">
         {selectedViewAlbumId === null ? (
           <div className="gallery-empty-hint">
             <span className="gallery-empty-icon">👈</span>
             <strong>Оберіть альбом зі списку вище</strong>
-            <p style={{ fontSize: '13px', marginTop: '4px', margin: 0 }}>
+            <p className="admin-text-subtle margin-0 margin-top-4 font-size-13">
               Натисніть кнопку <b>«👁️ Зайти в альбом»</b> біля потрібного альбому, щоб переглянути та видалити його фотографії.
             </p>
           </div>
@@ -441,7 +448,7 @@ function AdminGallery({ token, setMessage }) {
             <div className="gallery-view-header">
               <h3>
                 🖼️ Фотографії альбому «{openAlbumObj?.title}»
-                <span className="admin-news-date" style={{ marginLeft: '10px' }}>
+                <span className="admin-news-date margin-left-10">
                   ({openAlbumPhotos.length} шт.)
                 </span>
               </h3>
@@ -476,8 +483,7 @@ function AdminGallery({ token, setMessage }) {
                       </span>
                       <button
                         onClick={() => handleDeletePhoto(photo.id)}
-                        className="btn btn-danger"
-                        style={{ padding: '4px 8px', fontSize: '12px' }}
+                        className="btn btn-danger btn-sm-action"
                         title="Видалити фото"
                       >
                         🗑️

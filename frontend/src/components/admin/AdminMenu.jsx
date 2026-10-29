@@ -120,23 +120,22 @@ function AdminMenu({ token, setMessage }) {
     setMenuItems(updated);
   };
 
-  if (loading) return <div style={{ padding: '20px', color: '#64748b' }}>⏳ Завантаження меню...</div>;
+  if (loading) return <div className="admin-text-subtle padding-20">⏳ Завантаження меню...</div>;
 
   return (
     <div className="admin-card">
       <h2>🌐 Редактор Головного Меню</h2>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div className="admin-flex-col gap-16">
         {menuItems.map((item, pIndex) => (
-          <div key={pIndex} style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', border: '1px solid #cbd5e1' }}>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <div key={pIndex} className="menu-parent-card">
+            <div className="menu-parent-controls">
+              <div className="menu-arrow-box">
                 <button
                   type="button"
                   onClick={() => moveItemUp(pIndex)}
                   disabled={pIndex === 0}
-                  className="btn btn-secondary"
-                  style={{ padding: '2px 6px', fontSize: '10px' }}
+                  className="btn btn-secondary btn-xs-nav"
                 >
                   ▲
                 </button>
@@ -144,8 +143,7 @@ function AdminMenu({ token, setMessage }) {
                   type="button"
                   onClick={() => moveItemDown(pIndex)}
                   disabled={pIndex === menuItems.length - 1}
-                  className="btn btn-secondary"
-                  style={{ padding: '2px 6px', fontSize: '10px' }}
+                  className="btn btn-secondary btn-xs-nav"
                 >
                   ▼
                 </button>
@@ -153,19 +151,17 @@ function AdminMenu({ token, setMessage }) {
 
               <input
                 type="text"
-                className="form-control"
+                className="form-control menu-input-flex"
                 value={item.title}
                 onChange={e => updateItem(pIndex, 'title', e.target.value)}
                 placeholder="Назва (напр. Про школу)"
-                style={{ flex: 1, minWidth: '160px' }}
               />
               <input
                 type="text"
-                className="form-control"
+                className="form-control menu-input-flex"
                 value={item.link}
                 onChange={e => updateItem(pIndex, 'link', e.target.value)}
                 placeholder="Посилання (напр. /about)"
-                style={{ flex: 1, minWidth: '160px' }}
               />
               <button
                 type="button"
@@ -184,16 +180,15 @@ function AdminMenu({ token, setMessage }) {
             </div>
 
             {item.subItems && item.subItems.length > 0 && (
-              <div style={{ marginLeft: '36px', marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px', borderLeft: '3px solid #cbd5e1', paddingLeft: '16px' }}>
+              <div className="menu-subitems-container">
                 {item.subItems.map((sub, sIndex) => (
-                  <div key={sIndex} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  <div key={sIndex} className="menu-subitem-row">
+                    <div className="menu-arrow-box">
                       <button
                         type="button"
                         onClick={() => moveSubItemUp(pIndex, sIndex)}
                         disabled={sIndex === 0}
-                        className="btn btn-secondary"
-                        style={{ padding: '1px 5px', fontSize: '9px' }}
+                        className="btn btn-secondary btn-sub-nav"
                       >
                         ▲
                       </button>
@@ -201,35 +196,31 @@ function AdminMenu({ token, setMessage }) {
                         type="button"
                         onClick={() => moveSubItemDown(pIndex, sIndex)}
                         disabled={sIndex === item.subItems.length - 1}
-                        className="btn btn-secondary"
-                        style={{ padding: '1px 5px', fontSize: '9px' }}
+                        className="btn btn-secondary btn-sub-nav"
                       >
                         ▼
                       </button>
                     </div>
 
-                    <span style={{ color: '#94a3b8', fontWeight: 'bold' }}>↳</span>
+                    <span className="menu-subitem-arrow">↳</span>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control admin-flex-1"
                       value={sub.title}
                       onChange={e => updateSubItem(pIndex, sIndex, 'title', e.target.value)}
                       placeholder="Назва підпункту"
-                      style={{ flex: 1 }}
                     />
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control admin-flex-1"
                       value={sub.link}
                       onChange={e => updateSubItem(pIndex, sIndex, 'link', e.target.value)}
                       placeholder="Посилання"
-                      style={{ flex: 1 }}
                     />
                     <button
                       type="button"
                       onClick={() => removeSubItem(pIndex, sIndex)}
-                      className="btn btn-danger"
-                      style={{ padding: '6px 10px' }}
+                      className="btn btn-danger btn-icon-del"
                     >
                       ✕
                     </button>
@@ -241,7 +232,7 @@ function AdminMenu({ token, setMessage }) {
         ))}
       </div>
 
-      <div style={{ marginTop: '20px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+      <div className="admin-flex-row-gap margin-top-20 flex-wrap">
         <button
           type="button"
           onClick={addMainItem}

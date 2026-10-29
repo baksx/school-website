@@ -59,34 +59,32 @@ function AdminSettings({ token, setMessage }) {
 
   return (
     <div className="admin-card">
-      <h2 style={{ marginBottom: '20px', color: '#0f172a' }}>⚙️ Основні налаштування та брендинг</h2>
+      <h2 className="margin-bottom-20">⚙️ Основні налаштування та брендинг</h2>
 
       <form onSubmit={handleSaveSettings}>
-        {/* ЛОГОТИП */}
-        <div style={{ background: '#f8fafc', padding: '20px', borderRadius: '12px', marginBottom: '24px', border: '1px solid #e2e8f0' }}>
-          <h3 style={{ fontSize: '15px', marginBottom: '12px', color: '#0f172a' }}>🖼️ Логотип школи в шапці (Header)</h3>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <div style={{ width: '80px', height: '80px', borderRadius: '12px', background: '#ffffff', border: '1px solid #cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+        <div className="settings-logo-box">
+          <h3 className="settings-section-title">🖼️ Логотип школи в шапці (Header)</h3>
+          <div className="admin-flex-row-gap-20">
+            <div className="settings-logo-preview-wrapper">
               {settings.school_logo_url ? (
-                <img src={getImageUrl(settings.school_logo_url)} alt="Logo Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                <img src={getImageUrl(settings.school_logo_url)} alt="Logo Preview" className="settings-logo-img" />
               ) : (
-                <span style={{ fontSize: '11px', color: '#94a3b8', textAlign: 'center' }}>Немає логотипа</span>
+                <span className="admin-text-subtle font-size-11 text-center">Немає логотипа</span>
               )}
             </div>
             <div>
               <input key={fileInputKey} type="file" accept="image/*" onChange={e => handleFileUpload(e, url => setSettings({ ...settings, school_logo_url: url }))} />
-              <p style={{ fontSize: '12px', color: '#64748b', margin: '4px 0 0 0' }}>Рекомендовано PNG з прозорим фоном.</p>
+              <p className="admin-text-subtle font-size-12 margin-top-4 margin-0">Рекомендовано PNG з прозорим фоном.</p>
             </div>
           </div>
         </div>
 
-        {/* ДАНІ ШКОЛИ */}
         <div className="form-group">
           <label className="form-label">Назва школи / ліцею:</label>
           <input type="text" className="form-control" value={settings.school_name || ''} onChange={e => setSettings({ ...settings, school_name: e.target.value })} />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+        <div className="form-group-grid-2">
           <div className="form-group">
             <label className="form-label">Телефон школи:</label>
             <input type="text" className="form-control" value={settings.school_phone || ''} onChange={e => setSettings({ ...settings, school_phone: e.target.value })} />
@@ -97,10 +95,9 @@ function AdminSettings({ token, setMessage }) {
           </div>
         </div>
 
-        <hr style={{ margin: '24px 0', border: 'none', borderTop: '1px solid #e2e8f0' }} />
+        <hr className="divider-hr" />
 
-        {/* БАНЕР */}
-        <h3 style={{ fontSize: '16px', marginBottom: '16px', color: '#0f172a' }}>🎨 Привітальний банер (Hero Banner)</h3>
+        <h3 className="settings-section-title font-size-16">🎨 Привітальний банер (Hero Banner)</h3>
         <div className="form-group">
           <label className="form-label">Заголовок банера:</label>
           <input type="text" className="form-control" value={settings.hero_title || ''} onChange={e => setSettings({ ...settings, hero_title: e.target.value })} />
@@ -111,15 +108,15 @@ function AdminSettings({ token, setMessage }) {
         </div>
         <div className="form-group">
           <label className="form-label">Фонове зображення банера:</label>
-          <input key={`banner-${fileInputKey}`} type="file" accept="image/*" onChange={e => handleFileUpload(e, url => setSettings({ ...settings, hero_banner_url: url }))} style={{ display: 'block', marginBottom: '10px' }} />
+          <input key={`banner-${fileInputKey}`} type="file" accept="image/*" onChange={e => handleFileUpload(e, url => setSettings({ ...settings, hero_banner_url: url }))} className="display-block margin-bottom-10" />
           {settings.hero_banner_url && (
-            <div style={{ height: '120px', borderRadius: '8px', overflow: 'hidden' }}>
-              <img src={getImageUrl(settings.hero_banner_url)} alt="Banner Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div className="settings-banner-preview">
+              <img src={getImageUrl(settings.hero_banner_url)} alt="Banner Preview" className="settings-banner-img" />
             </div>
           )}
         </div>
 
-        <button type="submit" className="btn btn-primary" style={{ marginTop: '20px', padding: '12px 28px' }}>
+        <button type="submit" className="btn btn-primary margin-top-20 padding-12-28">
           💾 Зберегти всі налаштування
         </button>
       </form>

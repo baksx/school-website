@@ -1,14 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
-const { authenticateToken } = require('../middleware/auth');
+const { authenticateToken, requirePermission } = require('../middleware/auth');
 
-// 1. Отримати оголошення (Публічно: тільки активні та не прострочені)
+// 1. Отримати оголошення (Публічно: тільки активні; прапор all=true потребує авторизації)
 router.get('/', async (req, res) => {
   try {
     const showAll = req.query.all === 'true';
-    let query = 'SELECT * FROM announcements';
 
+    // Для перегляду неактивних або застарілих оголошень вимагається авторизація
+    if (showAll) {
+      const authHeader = req.headers['authorization'];
+      if (!authHeader) {
+        return res.status(401).json({ error: 'Повний список оголошень вимагає авторизації' });
+      }
+    }
+
+    let query = 'SELECT * FROM announcements';
     if (!showAll) {
       query += ' WHERE is_active = 1 AND (expires_at IS NULL OR expires_at >= NOW())';
     }
@@ -22,15 +30,15 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 2. Створити оголошення (Адмін)
-router.post('/', authenticateToken, async (req, res) => {
+// 2. Створити оголошення (Вимагає право 'announcements' або 'news')
+router.post('/', authenticateToken, requirePermission('announcements'), async (req, res) => {
   const { title, content, expires_at, is_active } = req.body;
 
   if (!title || !content) {
     return res.status(400).json({ error: 'Заповніть заголовок та зміст оголошення' });
   }
 
-  const expireValue = expires_at ? `${expires_at} 23:59:59` : null;
+  const expireValue = (expires_at && String(expires_at).trim() !== '') ? `${expires_at} 23:59:59` : null;
   const activeValue = is_active !== undefined ? (is_active ? 1 : 0) : 1;
 
   try {
@@ -46,8 +54,8 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
-// 3. Перемикач активності (Адмін)
-router.patch('/:id/toggle-active', authenticateToken, async (req, res) => {
+// 3. Перемикач активності
+router.patch('/:id/toggle-active', authenticateToken, requirePermission('announcements'), async (req, res) => {
   const { is_active } = req.body;
   try {
     await pool.query('UPDATE announcements SET is_active = ? WHERE id = ?', [is_active ? 1 : 0, req.params.id]);
@@ -57,8 +65,8 @@ router.patch('/:id/toggle-active', authenticateToken, async (req, res) => {
   }
 });
 
-// 4. Видалити оголошення (Адмін)
-router.delete('/:id', authenticateToken, async (req, res) => {
+// 4. Видалити оголошення
+router.delete('/:id', authenticateToken, requirePermission('announcements'), async (req, res) => {
   try {
     await pool.query('DELETE FROM announcements WHERE id = ?', [req.params.id]);
     res.json({ message: 'Оголошення видалено' });

@@ -28,7 +28,6 @@ function AdminNews({ token, setMessage }) {
   const [fileInputKey, setFileInputKey] = useState(Date.now());
   const editorRef = useRef(null);
 
-  // СТАН ФІЛЬТРІВ ТА ПАГІНАЦІЇ
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -126,7 +125,6 @@ function AdminNews({ token, setMessage }) {
     }
   };
 
-  // ЛОГІКА ФІЛЬТРАЦІЇ
   const availableYears = Array.from(
     new Set(
       newsList
@@ -147,7 +145,6 @@ function AdminNews({ token, setMessage }) {
     return yearMatches && monthMatches;
   });
 
-  // ЛОГІКА ПАГІНАЦІЇ
   const totalPages = Math.ceil(filteredNews.length / itemsPerPage) || 1;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -161,7 +158,6 @@ function AdminNews({ token, setMessage }) {
 
   return (
     <div>
-      {/* ФОРМА СТВОРЕННЯ / РЕДАГУВАННЯ */}
       <div className="admin-card">
         <h2>{newsForm.id ? '✏️ Редагувати новину' : '➕ Додати нову новину'}</h2>
         <form onSubmit={handleSaveNews}>
@@ -185,7 +181,7 @@ function AdminNews({ token, setMessage }) {
               value={newsForm.date || ''}
               onChange={e => setNewsForm({ ...newsForm, date: e.target.value })}
             />
-            <small style={{ color: '#64748b', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+            <small className="admin-text-subtle margin-top-4 display-block font-size-12">
               * Якщо залишити порожнім — підставиться сьогоднішня дата.
             </small>
           </div>
@@ -197,15 +193,14 @@ function AdminNews({ token, setMessage }) {
               type="file"
               accept="image/*"
               onChange={e => handleFileUpload(e, url => setNewsForm({ ...newsForm, image_url: url }))}
-              style={{ display: 'block', marginBottom: '8px' }}
+              className="display-block margin-bottom-8"
             />
             {newsForm.image_url && (
-              <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <img src={getImageUrl(newsForm.image_url)} alt="Preview" style={{ height: '80px', borderRadius: '6px' }} />
+              <div className="admin-flex-row-gap margin-top-8 align-center">
+                <img src={getImageUrl(newsForm.image_url)} alt="Preview" className="height-80 border-radius-6" />
                 <button
                   type="button"
-                  className="btn btn-danger"
-                  style={{ padding: '4px 10px', fontSize: '12px' }}
+                  className="btn btn-danger btn-sm-action"
                   onClick={() => setNewsForm({ ...newsForm, image_url: '' })}
                 >
                   Видалити зображення
@@ -256,7 +251,7 @@ function AdminNews({ token, setMessage }) {
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+          <div className="admin-flex-row-gap margin-top-20">
             <button type="submit" className="btn btn-primary">
               {newsForm.id ? 'Зберегти зміни' : 'Опублікувати новину'}
             </button>
@@ -269,11 +264,9 @@ function AdminNews({ token, setMessage }) {
         </form>
       </div>
 
-      {/* СПИСОК НОВИН З ФІЛЬТРАМИ ТА ПАГІНАЦІЄЮ */}
       <div className="admin-card">
         <h3>📰 Опубліковані новини ({filteredNews.length})</h3>
 
-        {/* ПАНЕЛЬ ФІЛЬТРІВ */}
         <div className="admin-filters-bar">
           <div className="admin-filter-group">
             <label className="admin-filter-label">Рік:</label>
@@ -314,7 +307,6 @@ function AdminNews({ token, setMessage }) {
           )}
         </div>
 
-        {/* СПИСОК НОВИН */}
         {currentNewsPage.length > 0 ? (
           <div className="admin-news-list-container">
             {currentNewsPage.map(item => (
@@ -338,7 +330,6 @@ function AdminNews({ token, setMessage }) {
           </div>
         )}
 
-        {/* ПАГІНАЦІЯ */}
         {totalPages > 1 && (
           <div className="admin-pagination-container">
             <button

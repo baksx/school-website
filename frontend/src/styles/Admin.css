@@ -116,6 +116,93 @@
   font-weight: 800;
 }
 
+.admin-card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.admin-text-subtle {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.admin-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.admin-grid-box {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.admin-flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-flex-row-gap {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-flex-row-gap-20 {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.admin-flex-1 {
+  flex: 1;
+}
+
+.admin-margin-top-22 {
+  margin-top: 22px;
+}
+
+.admin-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.admin-path-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  background: #eff6ff;
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
+.admin-path-title {
+  font-weight: bold;
+  color: #1e40af;
+}
+
+.admin-path-value {
+  font-family: monospace;
+  color: #0f172a;
+}
+
+.admin-btn-back {
+  margin-left: auto;
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
 /* Форми та елементи вводу */
 .form-group {
   margin-bottom: 18px;
@@ -144,6 +231,18 @@
 .form-control:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.form-group-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group-grid-2-sm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 /* Уніфіковані кнопки */
@@ -207,7 +306,32 @@
   background: #dc2626;
 }
 
-/* Елементи списків в адмінці */
+.btn-sm-action {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.btn-xs-nav {
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
+.btn-sub-nav {
+  padding: 1px 5px;
+  font-size: 9px;
+}
+
+.btn-icon-del {
+  padding: 6px 10px;
+}
+
+.btn-login-submit {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+}
+
+/* Списки та таблиці */
 .admin-list-item {
   background: #f8fafc;
   border-radius: 12px;
@@ -219,7 +343,6 @@
   margin-bottom: 12px;
 }
 
-/* Таблиці адмінки */
 .admin-table {
   width: 100%;
   border-collapse: collapse;
@@ -239,7 +362,7 @@
   border-bottom: 1px solid #f1f5f9;
 }
 
-/* Статистика / Метрики */
+/* Статистика та графіки */
 .stats-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -319,13 +442,8 @@
   border: 1px solid #e2e8f0;
 }
 
-.status-item.done {
-  border-left: 4px solid #22c55e;
-}
-
-.status-item.pending {
-  border-left: 4px solid #f59e0b;
-}
+.status-item.done { border-left: 4px solid #22c55e; }
+.status-item.pending { border-left: 4px solid #f59e0b; }
 
 .status-item span {
   font-weight: 600;
@@ -338,7 +456,25 @@
   color: #64748b;
 }
 
-/* Графік */
+.stats-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.stats-info-list li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.btn-info-custom {
+  background: #0284c7;
+  color: #fff;
+  border: none;
+}
+
 .chart-header {
   display: flex;
   justify-content: space-between;
@@ -413,11 +549,8 @@
   min-width: 500px;
   display: block;
 }
-/* ==========================================================================
-   ФІЛЬТРИ ТА ПАГІНАЦІЯ В АДМІНПАНЕЛЬ НОВИН (ADMIN NEWS FILTERS & PAGINATION)
-   ========================================================================== */
 
-/* Панель фільтрів */
+/* Новини, фільтри та пагінація */
 .admin-filters-bar {
   display: flex;
   gap: 12px;
@@ -453,7 +586,6 @@
   font-size: 12px !important;
 }
 
-/* Перелік новин */
 .admin-news-list-container {
   display: flex;
   flex-direction: column;
@@ -485,7 +617,6 @@
   font-size: 14px;
 }
 
-/* Блок пагінації */
 .admin-pagination-container {
   display: flex;
   justify-content: center;
@@ -527,11 +658,8 @@
   border-color: #2563eb;
   box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
 }
-/* ==========================================================================
-   АДМІНІСТРУВАННЯ ГАЛЕРЕЇ ТА АЛЬБОМІВ (ADMIN GALLERY & ALBUMS)
-   ========================================================================== */
 
-/* Форма створення альбому */
+/* Галерея та альбоми */
 .album-create-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -544,7 +672,6 @@
   }
 }
 
-/* Перелік альбомів */
 .admin-albums-list {
   margin-top: 16px;
   display: flex;
@@ -611,7 +738,6 @@
   flex-wrap: wrap;
 }
 
-/* Інформаційні плашки та сітка фотографій */
 .gallery-empty-hint {
   padding: 36px;
   text-align: center;
@@ -681,4 +807,435 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Оголошення */
+.announcement-item-card {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.announcement-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.announcement-title {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.announcement-badge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.badge-active {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.badge-inactive {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.announcement-content {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #334155;
+  white-space: pre-wrap;
+}
+
+.announcement-footer {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Файловий менеджер */
+.file-manager-empty {
+  padding: 30px;
+  text-align: center;
+  color: #94a3b8;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+}
+
+.file-folder-link {
+  cursor: pointer;
+  color: #d97706;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.file-item-name {
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.text-right { text-align: right; }
+
+.flex-end-gap {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+/* Меню (Admin Menu) */
+.menu-parent-card {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+}
+
+.menu-parent-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.menu-arrow-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.menu-input-flex {
+  flex: 1;
+  min-width: 160px;
+}
+
+.menu-subitems-container {
+  margin-left: 36px;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-left: 3px solid #cbd5e1;
+  padding-left: 16px;
+}
+
+.menu-subitem-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.menu-subitem-arrow {
+  color: #94a3b8;
+  font-weight: bold;
+}
+
+/* Сторінки (Admin Pages) */
+.pages-layout-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.pages-sidebar {
+  border-right: 1px solid #e2e8f0;
+  padding-right: 16px;
+}
+
+.pages-new-btn {
+  width: 100%;
+  padding: 10px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.pages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pages-list-item {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pages-list-item.selected {
+  background: #eff6ff;
+  border-color: #3b82f6;
+}
+
+.pages-item-title {
+  font-weight: bold;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.pages-item-slug {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.pages-editor-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.pages-actions-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn-save-page {
+  padding: 10px 24px;
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-delete-page {
+  padding: 10px 16px;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Налаштування (Admin Settings) */
+.settings-logo-box {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #e2e8f0;
+}
+
+.settings-section-title {
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: #0f172a;
+}
+
+.settings-logo-preview-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.settings-logo-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.settings-banner-preview {
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.settings-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.divider-hr {
+  margin: 24px 0;
+  border: none;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Користувачі та Ролі (Admin Users) */
+.users-section-card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.users-grid-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.users-permissions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.perm-checkbox-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #475569;
+}
+
+.perm-checkbox-card.active-user {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  font-weight: bold;
+  color: #1d4ed8;
+}
+
+.perm-checkbox-card.active-role {
+  background: #f0fdf4;
+  border-color: #22c55e;
+  font-weight: bold;
+  color: #15803d;
+}
+
+.role-item-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 12px 16px;
+  border-radius: 10px;
+}
+
+.role-item-box.editing {
+  background: #e0f2fe;
+  border-color: #0284c7;
+}
+
+.user-item-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.user-item-box.editing {
+  background: #e0f2fe;
+  border-color: #0284c7;
+}
+
+.badge-role-admin {
+  background: #ef4444;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.badge-role-editor {
+  background: #0284c7;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* Допоміжні класи розмірів та відступів */
+.margin-0 { margin: 0 !important; }
+.margin-top-4 { margin-top: 4px !important; }
+.margin-top-6 { margin-top: 6px !important; }
+.margin-top-8 { margin-top: 8px !important; }
+.margin-top-12 { margin-top: 12px !important; }
+.margin-top-14 { margin-top: 14px !important; }
+.margin-top-16 { margin-top: 16px !important; }
+.margin-top-20 { margin-top: 20px !important; }
+.margin-top-24 { margin-top: 24px !important; }
+
+.margin-bottom-6 { margin-bottom: 6px !important; }
+.margin-bottom-8 { margin-bottom: 8px !important; }
+.margin-bottom-10 { margin-bottom: 10px !important; }
+.margin-bottom-12 { margin-bottom: 12px !important; }
+.margin-bottom-16 { margin-bottom: 16px !important; }
+.margin-bottom-20 { margin-bottom: 20px !important; }
+.margin-bottom-24 { margin-bottom: 24px !important; }
+
+.margin-left-10 { margin-left: 10px !important; }
+
+.padding-20 { padding: 20px !important; }
+.padding-30 { padding: 30px !important; }
+.padding-10-22 { padding: 10px 22px !important; }
+.padding-12-24 { padding: 12px 24px !important; }
+.padding-12-28 { padding: 12px 28px !important; }
+.padding-top-16 { padding-top: 16px !important; }
+
+.font-size-11 { font-size: 11px !important; }
+.font-size-12 { font-size: 12px !important; }
+.font-size-13 { font-size: 13px !important; }
+.font-size-14 { font-size: 14px !important; }
+.font-size-15 { font-size: 15px !important; }
+.font-size-16 { font-size: 16px !important; }
+.font-size-18 { font-size: 18px !important; }
+
+.font-weight-bold { font-weight: bold !important; }
+
+.display-block { display: block !important; }
+.align-center { align-items: center !important; }
+.flex-wrap { flex-wrap: wrap !important; }
+
+.height-80 { height: 80px !important; }
+.border-radius-6 { border-radius: 6px !important; }
+
+.width-auto { width: auto !important; }
+.min-width-240 { min-width: 240px !important; }
+
+.border-top-slate { border-top: 1px solid #f1f5f9 !important; }
+.text-center { text-align: center !important; }
+.text-slate-600 { color: #475569 !important; }
+
+.gap-6 { gap: 6px !important; }
+.gap-8 { gap: 8px !important; }
+.gap-10 { gap: 10px !important; }
+.gap-12 { gap: 12px !important; }
+.gap-15 { gap: 15px !important; }
+.gap-16 { gap: 16px !important; }
+.gap-24 { gap: 24px !important; }
+
+.checkbox-custom {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
 }

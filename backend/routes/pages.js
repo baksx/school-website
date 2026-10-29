@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require('../config/db');
 const { authenticateToken, requirePermission } = require('../middleware/auth');
 
+// Отримати всі сторінки
 router.get('/', async (req, res) => {
   try {
     const [pages] = await pool.query('SELECT * FROM pages ORDER BY id DESC');
@@ -12,10 +13,11 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Отримати одну сторінку за її slug (для відображення на сайті)
+// Отримати одну сторінку за її slug
 router.get('/by-slug/:slug', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM pages WHERE slug = ? AND is_published = 1', [req.params.slug]);
+    const cleanSlug = String(req.params.slug).toLowerCase().trim();
+    const [rows] = await pool.query('SELECT * FROM pages WHERE slug = ? AND is_published = 1', [cleanSlug]);
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Сторінку не знайдено' });
     }
@@ -25,15 +27,14 @@ router.get('/by-slug/:slug', async (req, res) => {
   }
 });
 
-// Створення нової сторінки
-router.post('/', authenticateToken, requirePermission('settings'), async (req, res) => {
+// Створення нової сторінки (Вимагає право 'pages')
+router.post('/', authenticateToken, requirePermission('pages'), async (req, res) => {
   const { title, slug, content, is_published } = req.body;
   
   if (!title || !slug) {
     return res.status(400).json({ message: 'Назва та посилання (slug) є обов’язковими' });
   }
 
-  // Нормалізація slug (наприклад: "про нас" -> "about" або "pro-nas")
   const formattedSlug = slug.toLowerCase().replace(/[^a-z0-9-/]/g, '-').replace(/-+/g, '-');
 
   try {
@@ -50,8 +51,8 @@ router.post('/', authenticateToken, requirePermission('settings'), async (req, r
   }
 });
 
-// Оновлення існуючої сторінки
-router.put('/:id', authenticateToken, requirePermission('settings'), async (req, res) => {
+// Оновлення існуючої сторінки (Вимагає право 'pages')
+router.put('/:id', authenticateToken, requirePermission('pages'), async (req, res) => {
   const { title, slug, content, is_published } = req.body;
   const formattedSlug = slug.toLowerCase().replace(/[^a-z0-9-/]/g, '-').replace(/-+/g, '-');
 
@@ -66,8 +67,8 @@ router.put('/:id', authenticateToken, requirePermission('settings'), async (req,
   }
 });
 
-// Видалення сторінки
-router.delete('/:id', authenticateToken, requirePermission('settings'), async (req, res) => {
+// Видалення сторінки (Вимагає право 'pages')
+router.delete('/:id', authenticateToken, requirePermission('pages'), async (req, res) => {
   try {
     await pool.query('DELETE FROM pages WHERE id = ?', [req.params.id]);
     res.json({ message: '🗑️ Сторінку видалено' });

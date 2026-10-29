@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 function AdminPolls({ token, setMessage }) {
@@ -8,16 +8,21 @@ function AdminPolls({ token, setMessage }) {
   const [expiresAt, setExpiresAt] = useState('');
   const [isActive, setIsActive] = useState(true);
 
+  // Отримання списку опитувань із токеном авторизації
+  const loadPolls = useCallback(async () => {
+    try {
+      const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+      const res = await axios.get('/api/polls?all=true', config);
+      setPolls(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error('Помилка завантаження опитувань:', err);
+      if (setMessage) setMessage('❌ Помилка завантаження опитувань');
+    }
+  }, [token, setMessage]);
+
   useEffect(() => {
     loadPolls();
-  }, []);
-
-  const loadPolls = () => {
-    // Передаємо ?all=true щоб бачити і неактивні опитування у адмінці
-    axios.get('/api/polls?all=true')
-      .then(res => setPolls(Array.isArray(res.data) ? res.data : []))
-      .catch(console.error);
-  };
+  }, [loadPolls]);
 
   const handleAddOptionField = () => setOptions([...options, '']);
 
@@ -93,8 +98,8 @@ function AdminPolls({ token, setMessage }) {
             />
           </div>
 
-          <div className="form-group" style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-            <div style={{ flex: 1 }}>
+          <div className="form-group admin-flex-row-gap-20">
+            <div className="admin-flex-1">
               <label className="form-label">Голосування діє до (необов’язково):</label>
               <input
                 type="date"
@@ -104,8 +109,8 @@ function AdminPolls({ token, setMessage }) {
               />
             </div>
             
-            <div style={{ marginTop: '22px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+            <div className="admin-margin-top-22">
+              <label className="admin-checkbox-label">
                 <input
                   type="checkbox"
                   checked={isActive}
@@ -122,8 +127,7 @@ function AdminPolls({ token, setMessage }) {
               <input
                 key={idx}
                 type="text"
-                className="form-control"
-                style={{ marginBottom: '8px' }}
+                className="form-control margin-bottom-8"
                 placeholder={`Варіант ${idx + 1}`}
                 value={opt}
                 onChange={e => handleOptionChange(idx, e.target.value)}
@@ -132,15 +136,14 @@ function AdminPolls({ token, setMessage }) {
             ))}
             <button
               type="button"
-              className="btn btn-secondary"
-              style={{ marginTop: '6px', fontSize: '12px' }}
+              className="btn btn-secondary btn-sm-action margin-top-6"
               onClick={handleAddOptionField}
             >
               ➕ Додати варіант
             </button>
           </div>
 
-          <button type="submit" className="btn btn-primary" style={{ marginTop: '12px' }}>
+          <button type="submit" className="btn btn-primary margin-top-12">
             🚀 Опублікувати опитування
           </button>
         </form>
@@ -156,25 +159,18 @@ function AdminPolls({ token, setMessage }) {
               const isExpired = poll.expires_at && new Date() > new Date(poll.expires_at);
 
               return (
-                <div key={poll.id} className="admin-album-item" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div key={poll.id} className="admin-album-item announcement-item-card">
+                  <div className="announcement-item-header">
                     <div>
-                      <strong className="admin-album-title" style={{ fontSize: '16px', marginRight: '10px' }}>{poll.title}</strong>
-                      <span style={{ 
-                        padding: '2px 8px', 
-                        borderRadius: '4px', 
-                        fontSize: '12px', 
-                        backgroundColor: poll.is_active && !isExpired ? '#dcfce7' : '#fee2e2',
-                        color: poll.is_active && !isExpired ? '#166534' : '#991b1b'
-                      }}>
+                      <strong className="admin-album-title announcement-title">{poll.title}</strong>
+                      <span className={`announcement-badge ${poll.is_active && !isExpired ? 'badge-active' : 'badge-inactive'}`}>
                         {!poll.is_active ? '🔴 Вимкнено' : (isExpired ? '⏳ Завершено' : '🟢 Активне')}
                       </span>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '8px' }}>
+                    <div className="admin-flex-row-gap">
                       <button 
-                        className="btn btn-secondary" 
-                        style={{ fontSize: '12px' }}
+                        className="btn btn-secondary btn-sm-action" 
                         onClick={() => handleToggleActive(poll.id, poll.is_active)}
                       >
                         {poll.is_active ? 'Вимкнути' : 'Увімкнути'}
@@ -184,7 +180,7 @@ function AdminPolls({ token, setMessage }) {
                       </button>
                     </div>
                   </div>
-                  <div style={{ marginTop: '8px', fontSize: '13px', color: '#64748b', display: 'flex', gap: '15px' }}>
+                  <div className="admin-flex-row-gap margin-top-8 font-size-13 admin-text-subtle gap-15">
                     <span>Голосів: <b>{totalVotes}</b></span>
                     <span>Дійсне до: <b>{formattedExp}</b></span>
                   </div>

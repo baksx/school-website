@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 function AdminAnnouncements({ token, setMessage }) {
@@ -8,15 +8,21 @@ function AdminAnnouncements({ token, setMessage }) {
   const [expiresAt, setExpiresAt] = useState('');
   const [isActive, setIsActive] = useState(true);
 
+  // Отримання списку оголошень із токеном авторизації
+  const loadItems = useCallback(async () => {
+    try {
+      const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+      const res = await axios.get('/api/announcements?all=true', config);
+      setItems(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error('Помилка завантаження оголошень:', err);
+      if (setMessage) setMessage('❌ Помилка завантаження оголошень');
+    }
+  }, [token, setMessage]);
+
   useEffect(() => {
     loadItems();
-  }, []);
-
-  const loadItems = () => {
-    axios.get('/api/announcements?all=true')
-      .then(res => setItems(Array.isArray(res.data) ? res.data : []))
-      .catch(console.error);
-  };
+  }, [loadItems]);
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -53,7 +59,9 @@ function AdminAnnouncements({ token, setMessage }) {
   const handleDelete = async (id) => {
     if (!window.confirm('Видалити це оголошення?')) return;
     try {
-      await axios.delete(`/api/announcements/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.delete(`/api/announcements/${id}`, { 
+        headers: { Authorization: `Bearer ${token}` } 
+      });
       if (setMessage) setMessage('Оголошення видалено!');
       loadItems();
     } catch (err) {

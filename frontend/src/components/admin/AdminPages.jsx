@@ -76,7 +76,6 @@ function AdminPages({ token, setMessage }) {
   const handleSave = async (e) => {
     e.preventDefault();
 
-    // Отримуємо актуальний HTML з редактора
     const contentFromEditor = editorRef.current ? editorRef.current.getContent() : formData.content;
 
     const payload = {
@@ -118,79 +117,67 @@ function AdminPages({ token, setMessage }) {
     }
   };
 
-  if (loading) return <div style={{ padding: '20px', color: '#64748b' }}>⏳ Завантаження сторінок...</div>;
+  if (loading) return <div className="admin-text-subtle padding-20">⏳ Завантаження сторінок...</div>;
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '20px', background: '#fff', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-      
-      {/* ЛІВА КОЛОНКА — СПИСОК СТОРІНОК */}
-      <div style={{ borderRight: '1px solid #e2e8f0', paddingRight: '16px' }}>
+    <div className="pages-layout-grid">
+      <div className="pages-sidebar">
         <button
           type="button"
           onClick={handleNewPage}
-          style={{ width: '100%', padding: '10px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', marginBottom: '16px' }}
+          className="pages-new-btn"
         >
           ➕ Створити сторінку
         </button>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="pages-list">
           {pages.map(page => (
             <div
               key={page.id}
               onClick={() => handleSelectPage(page)}
-              style={{
-                padding: '10px 12px',
-                borderRadius: '8px',
-                background: selectedPage?.id === page.id ? '#eff6ff' : '#f8fafc',
-                border: selectedPage?.id === page.id ? '1px solid #3b82f6' : '1px solid #cbd5e1',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease'
-              }}
+              className={`pages-list-item ${selectedPage?.id === page.id ? 'selected' : ''}`}
             >
-              <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#0f172a' }}>{page.title}</div>
-              <div style={{ fontSize: '12px', color: '#64748b' }}>/page/{page.slug}</div>
+              <div className="pages-item-title">{page.title}</div>
+              <div className="pages-item-slug">/page/{page.slug}</div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ПРАВА КОЛОНКА — РЕДАКТОР TINYMCE */}
       <div>
-        <h3 style={{ marginTop: 0, color: '#0f172a' }}>
+        <h3>
           {selectedPage ? `✏️ Редагування: ${selectedPage.title}` : '📄 Створення нової сторінки'}
         </h3>
         
-        <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+        <form onSubmit={handleSave} className="admin-flex-col gap-16">
+          <div className="form-group-grid-2-sm">
             <div>
-              <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px', fontSize: '13px' }}>Заголовок сторінки:</label>
+              <label className="pages-editor-label">Заголовок сторінки:</label>
               <input
                 type="text"
                 required
+                className="form-control"
                 value={formData.title}
                 onChange={e => setFormData({ ...formData, title: e.target.value })}
                 placeholder="Наприклад: Про школу"
-                style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', boxSizing: 'border-box' }}
               />
             </div>
 
             <div>
-              <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px', fontSize: '13px' }}>URL-адреса (Slug):</label>
+              <label className="pages-editor-label">URL-адреса (Slug):</label>
               <input
                 type="text"
                 required
+                className="form-control"
                 value={formData.slug}
                 onChange={e => setFormData({ ...formData, slug: e.target.value })}
                 placeholder="about або contacts"
-                style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', boxSizing: 'border-box' }}
               />
             </div>
           </div>
 
-          {/* ПОЛНОФУНКЦІОНАЛЬНИЙ TINYMCE */}
           <div>
-            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '6px', fontSize: '13px' }}>Контент сторінки:</label>
+            <label className="pages-editor-label margin-bottom-6">Контент сторінки:</label>
             <Editor
               tinymceScriptSrc="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"
               onInit={(evt, editor) => editorRef.current = editor}
@@ -234,20 +221,20 @@ function AdminPages({ token, setMessage }) {
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '12px' }}>
+          <div className="admin-flex-row-gap margin-top-12 align-center">
             <input
               type="checkbox"
               id="is_published"
               checked={formData.is_published}
               onChange={e => setFormData({ ...formData, is_published: e.target.checked })}
             />
-            <label htmlFor="is_published" style={{ fontWeight: 'bold', fontSize: '14px', cursor: 'pointer' }}>Опублікувати сторінку на сайті</label>
+            <label htmlFor="is_published" className="admin-checkbox-label">Опублікувати сторінку на сайті</label>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', marginTop: '10px' }}>
+          <div className="pages-actions-row">
             <button
               type="submit"
-              style={{ padding: '10px 24px', background: '#16a34a', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer' }}
+              className="btn-save-page"
             >
               💾 Зберегти сторінку
             </button>
@@ -255,16 +242,14 @@ function AdminPages({ token, setMessage }) {
               <button
                 type="button"
                 onClick={() => handleDelete(selectedPage.id)}
-                style={{ padding: '10px 16px', background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer' }}
+                className="btn-delete-page"
               >
                 🗑️ Видалити
               </button>
             )}
           </div>
-
         </form>
       </div>
-
     </div>
   );
 }
